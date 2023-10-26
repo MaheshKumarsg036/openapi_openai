@@ -1,0 +1,135 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "description": "OpenAI Json file",
+    "title": "Simplified Open AI API",
+    "version": "1.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openai.com",
+      "description": "OpenAI"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v1/chat/completions": {
+      "post": {
+        "summary": "Get chat completions",
+        "description": "Retrieve chat completions from the OpenAI API",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["model", "messages"],
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "description": "The ID of the model to be used for this request.",
+                    "example": "gpt-3.5-turbo"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "description": "The input is the prompt to generate completions.",
+					"items": {
+                    "type": "object",
+                    "properties": {
+                      "role": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      }
+                    }
+				}
+                  }
+                  }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+					  "type": "string"
+					},
+					"object": {
+					  "type": "string"
+					},
+					"created": {
+					  "type": "integer"
+					},
+					"model": {
+					  "type": "string"
+					},
+					"choices": {
+					  "type": "array",
+					  "items": {
+						"type": "object",
+						"properties": {
+						  "index": {
+							"type": "integer"
+						  },
+						  "message": {
+							"type": "object",
+							"properties": {
+							  "role": {
+								"type": "string"
+							  },
+							  "content": {
+								"type": "string"
+							  }
+							}
+						  },
+						  "finish_reason": {
+							"type": "string"
+						  }
+						}
+					  }
+					},
+					"usage": {
+					  "type": "object",
+					  "properties": {
+						"prompt_tokens": {
+						  "type": "integer"
+						},
+						"completion_tokens": {
+						  "type": "integer"
+						},
+						"total_tokens": {
+						  "type": "integer"
+						}
+					  }
+					}
+				}
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error"
+          }
+        }
+      }
+    }
+  }
+}
